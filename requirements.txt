@@ -1,0 +1,6 @@
+Flask~=3.0
+requests~=2.32
+pytest~=8.2
+pytest-mock~=3.14
+slack_sdk~=3.29
+kubernetes~=30.1
