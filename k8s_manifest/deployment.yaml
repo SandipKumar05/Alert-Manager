@@ -13,6 +13,7 @@ spec:
       labels:
         app: alert-manager
     spec:
+      serviceAccountName: alert-manager
       containers:
       - name: alert-manager
         image: 96213/alert-manager:latest

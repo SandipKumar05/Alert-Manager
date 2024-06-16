@@ -1,0 +1,12 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: alert-manager-clusterrolebinding
+subjects:
+- kind: ServiceAccount
+  name: alert-manager
+  namespace: alert-manager
+roleRef:
+  kind: ClusterRole
+  name: alert-manager-clusterrole
+  apiGroup: rbac.authorization.k8s.io
