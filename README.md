@@ -1,7 +1,5 @@
 # Alert Manager
 
-# Alert Manager
-
 ## Overview
 
 Alert Manager is a system designed to handle alerts programmatically with defined actions. The system can receive alerts via a webhook, enrich the data, and take appropriate actions based on the alert type. It is designed for easy extendability, allowing developers to add new alert types and handling pipelines.
