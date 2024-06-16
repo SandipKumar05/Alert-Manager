@@ -1,21 +1,34 @@
+import json
+
+import requests
 from slack_sdk import WebClient
 from slack_sdk.errors import SlackApiError
 
 from src.config import SLACK_TOKEN
-from src.utils.logger import logger
+from src.utils.logger import get_logger
 
+logger = get_logger(__name__)
 client = WebClient(token=SLACK_TOKEN)
 
 
 def send_message(channel_id, message):
-    logger.info(f"{channel_id}, {message}")
-    try:
-        response = client.chat_postMessage(channel=channel_id, text=message)
-        logger.debug(response)
+    if not SLACK_TOKEN:
+        logger.error("Slack token not configured")
+        raise ValueError("Slack token not configured")
 
-    except SlackApiError as e:
-        logger.error(f"Error sending message: {e.response['error']}")
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": f"Bearer {SLACK_TOKEN}",
+    }
+    slack_data = {"channel": channel_id, "blocks": message["blocks"]}
 
+    response = requests.post(
+        "https://slack.com/api/chat.postMessage",
+        headers=headers,
+        data=json.dumps(slack_data),
+    )
+    if not response.ok:
+        logger.error(f"Failed to send message to Slack: {response.text}")
+        raise Exception(f"Failed to send message to Slack: {response.text}")
 
-if __name__ == "__main__":
-    send_message("#demo", "hello")
+    logger.info("Message sent to Slack successfully")

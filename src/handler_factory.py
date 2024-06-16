@@ -1,6 +1,8 @@
 from src.handlers.high_memory_usage import HighMemoryUsage
 from src.handlers.kube_pod_crash_looping import KubePodCrashLooping
-from src.utils.logger import logger
+from src.utils.logger import get_logger
+
+logger = get_logger(__name__)
 
 
 class AlertHandlerFactory:

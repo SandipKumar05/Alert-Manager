@@ -1,5 +1,74 @@
 # Alert Manager
 
+# Alert Manager
+
+## Overview
+
+Alert Manager is a system designed to handle alerts programmatically with defined actions. The system can receive alerts via a webhook, enrich the data, and take appropriate actions based on the alert type. It is designed for easy extendability, allowing developers to add new alert types and handling pipelines.
+
+## Features
+
+- **Receive Alerts**: Webhook endpoint to receive alerts.
+- **Enrich Data**: Enrich alert data by fetching additional information.
+- **Take Action**: Execute actions such as sending notifications to Slack based on the alert.
+- **Extendability**: Easily add new alert types and handling pipelines.
+
+
+## Getting Started
+
+### Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/alert_manager.git
+cd alert_manager
+
+# install dependencies
+pip install -r requirements.txt
+
+# export env variable as per src/config.py file
+export SLACK_TOKEN=<your slack app token>
+export PORT=5000
+# Add path in PYTHONPATH variable
+export PYTHONPATH="${PYTHONPATH}:/path/to/repo"
+# Execute entry point
+python src/app.py
+
+# The application will be accessible at http://localhost:5000
+```
+
+## Example post request
+
+```bash
+curl -X POST http://localhost:5000/webhook \
+     -H "Content-Type: application/json" \
+     -d '{
+           "annotations": {
+             "description": "Pod customer/customer-rs-transformer-9b75b488c-cpfd7 (rs-transformer) is restarting 2.11 times / 10 minutes.",
+             "summary": "Pod is crash looping."
+           },
+           "labels": {
+             "alertname": "KubePodCrashLooping",
+             "cluster": "cluster-main",
+             "container": "rs-transformer",
+             "endpoint": "http",
+             "job": "kube-state-metrics",
+             "namespace": "customer",
+             "pod": "customer-rs-transformer-9b75b488c-cpfd7",
+             "priority": "P0",
+             "prometheus": "monitoring/kube-prometheus-stack-prometheus",
+             "region": "us-west-1",
+             "replica": "0",
+             "service": "kube-prometheus-stack-kube-state-metrics",
+             "severity": "CRITICAL"
+           },
+           "startsAt": "2022-03-02T07:31:57.339Z",
+           "status": "firing"
+         }'
+
+```
+
+
 ## Adding New Alert Handlers workflow
 
 To add support for new alert types and handling pipelines in the Alert Manager system, follow these steps:
@@ -53,31 +122,4 @@ class AlertHandlerFactory:
             return NewAlertHandler()
         # Add more handlers for different alert types here
         return None
-```
-### 3. Test the New Handler
-
-3.1. Add tests for the new handler in tests/test_handlers.py:
-
-```python
-# tests/test_handlers.py
-
-from src.handlers.new_alert_handler import NewAlertHandler
-
-def test_new_alert_enrich_data():
-    handler = NewAlertHandler()
-    alert = {"annotations": {"description": "test", "summary": "test"}}
-    enriched_data = handler.enrich_data(alert)
-    assert "additional_info" in enriched_data
-
-def test_new_alert_take_action(mocker):
-    handler = NewAlertHandler()
-    mocker.patch("requests.post")
-    enriched_data = {"annotations": {"description": "test", "summary": "test"}}
-    handler.take_action(enriched_data)
-    requests.post.assert_called_once()
-
-```
-### 4. Runs the test
-```bash
-pytest
 ```

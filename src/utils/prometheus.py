@@ -1,7 +1,9 @@
 import requests
 
 from src.config import PROMETHEUS_URL
-from src.utils.logger import logger
+from src.utils.logger import get_logger
+
+logger = get_logger(__name__)
 
 
 def fetch_metric(query):
@@ -44,20 +46,3 @@ def fetch_memory_usage(namespace, pod, container):
         logger.info(f"Pod: {result['metric']['pod']}, Value: {result['value'][1]}")
         # return result in MB
         return float(result["value"][1]) / (1024 * 1024)
-
-
-if __name__ == "__main__":
-    # PROMETHEUS_URL = "http://localhost:9090"
-    # query = "up"
-
-    # metric_value = fetch_metric(query)
-    # if metric_value is not None:
-    #     print(f"Metric value: {metric_value}")
-
-    # pod = 'nginx-deployment-77d8468669-knb4n'
-    # ns = 'demo'
-    # container = 'nginx'
-    # cpu_usage = fetch_cpu_usage(ns, pod, container)
-    # mem_usage = fetch_memory_usage(ns, pod, container)
-
-    # print(f"memory:{mem_usage}, cpu: {cpu_usage}")

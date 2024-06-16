@@ -1,11 +1,10 @@
-import os
-import sys
-
 from flask import Flask, jsonify, request
 
 from src.config import PORT
 from src.handler_factory import AlertHandlerFactory
-from src.utils.logger import logger
+from src.utils.logger import get_logger
+
+logger = get_logger(__name__)
 
 app = Flask(__name__)
 
