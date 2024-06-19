@@ -1,4 +1,6 @@
 from abc import ABC, abstractmethod
+
+
 class AlertHandler:
     @abstractmethod
     def enrich_data(self, alert):

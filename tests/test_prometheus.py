@@ -1,5 +1,7 @@
+from unittest.mock import MagicMock, patch
+
 import pytest
-from unittest.mock import patch, MagicMock
+
 from src.utils.prometheus import fetch_cpu_usage, fetch_memory_usage
 
 # Mock response data for fetch_metric function
