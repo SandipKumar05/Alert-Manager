@@ -1,0 +1,21 @@
+# flask is a single threaded server but we can use different tool to make it multi threaded
+# two methods
+
+1. Use green unicorn or gunicorn, wsgi server web server gateway interface
+```bash
+pip install gunicorn
+gunicorn -w 4 -b 0.0.0.0:5000 app:app
+```
+
+2. Use uWSGI server 
+```bash
+pip install uwsgi 
+-- create init config file
+[uwsgi.ini]
+module = app:app
+master = true # run uwsgi in master mode
+processes = 4
+socket = 0.0.0.0:5000
+die-on-term = true # gracefully terminate on SIGTERM
+--
+uwsgi -ini uwsgi.ini

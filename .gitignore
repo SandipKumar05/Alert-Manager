@@ -3,3 +3,5 @@ __pycache__/
 venv
 test.sh
 alert_manager.log
+test_highMemoryUsage.sh
+test_KubePdCrashLooping.sh
